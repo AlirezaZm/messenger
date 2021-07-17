@@ -89,7 +89,7 @@ const rootScreenOptions = () => {
     const headerButtonOpen = useSelector(state => state.status.headerButtonOpen)
     return (
         {
-            headerTitle:'WhatsApp',
+            headerTitle:'Messenger',
             headerRight: () => {
                 return(
                     <View style={{flexDirection:'row' , justifyContent:'space-between',width:70,marginRight:10,overflow:'visible'}}>

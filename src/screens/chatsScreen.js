@@ -13,7 +13,9 @@ import { headerButtonStat } from '../redux/actions/status'
 export default function chatsScreen() {
     const dispatch = useDispatch()
     const buttonstatus = useSelector(state => state.status.headerButtonOpen)
+    const auth = useSelector(state => state.auth)
     const chatList = useSelector(state => state.chat.chatList)
+    
     React.useEffect(() => {
         dispatch(fetchChatList() )
     },[])

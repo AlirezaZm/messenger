@@ -1,5 +1,6 @@
 const UserAccount = require('../models/UserAccount')
 const ChatMessages = require('../models/ChatMessages')
+const {addChat } = require('../utils/socket')
 
 
 
@@ -14,14 +15,15 @@ const ChatMessages = require('../models/ChatMessages')
 }
 
 
-const addMessageToInstance = async(chat,message,senderUser,res) => {
+const addMessageToInstance = async(chat,message,senderUser,req,res,receiverId) => {
     const messages = chat.messages
     const chatMessage = {content: message,ownerUserNumber:senderUser}
     messages.push(chatMessage)
     chat.messages = messages
     chat.save()
     res.send(chat)
-    
+    addChat(chat, receiverId, req.io)
+
 }
 
 
@@ -57,11 +59,11 @@ const fetchChatList = (chat , usernumber) => {
     const messages = chat.messages
     const lastMessage  = messages[messages.length-1]
     result = { ...result, 
-                imageUrl: selectedUser.imageUrl, 
-                name: selectedUser.name,
-                id: selectedUser.userId,
-                content : lastMessage.content,
-                createdAt : lastMessage.createdAt
+                imageUrl: selectedUser?.imageUrl, 
+                name: selectedUser?.name,
+                id: selectedUser?.userId,
+                content : lastMessage?.content,
+                createdAt : lastMessage?.createdAt
             }
 
     return result

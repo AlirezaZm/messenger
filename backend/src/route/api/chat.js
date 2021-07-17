@@ -8,6 +8,8 @@ const User = require('../../models/Users')
 const UserAccount = require('../../models/UserAccount') 
 const auth = require('../../utils/auth')
 const ChatMessages = require('../../models/ChatMessages')
+const {chatList } = require('../../utils/socket')
+
 const { createNewMessageType,
       addMessageToInstance, 
       fetchMessage, fetchChatList,
@@ -31,15 +33,17 @@ router.post('/' ,  auth , async (req,res) => {
                else(
                     senderUser = 'user2'
                )
-               addMessageToInstance(chat,message,senderUser,res)
+               addMessageToInstance(chat, message, senderUser,req, res, receiverId) //receiverId is added to implement websocket
           }
           else{
                createNewMessageType(senderId,receiverId,res)
           }
      })
+
 })
 
 router.get('/' , auth , async(req,res) => {
+     chatList(req.io)
      const userId = req.user.id
      const chats = await ChatMessages.find()
      var result = []
@@ -68,8 +72,6 @@ router.get('/:userId' ,  auth , async (req,res) => {
 router.get('/block/:userId' , auth , async (req,res) => {
      const blockedUserId = req.params.userId
      const blockingUserId = req.user.id
-     
-
      const chats =await  ChatMessages.find()
      chats.map(chat => {
           const users = chat.users
@@ -79,9 +81,10 @@ router.get('/block/:userId' , auth , async (req,res) => {
           else if (users.user1.userId.toString() === blockedUserId&& users.user2.userId.toString() === blockingUserId.toString()) {
                blockUser(chat, 'user1')
           }
-     })
-     
-     
+     })   
 })
+
+
+
 
 module.exports = router

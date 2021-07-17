@@ -18,6 +18,8 @@ import DropDownMenu from '../components/chatScreenHeader/dropDownMenu'
 
 const {width,height} = Dimensions.get('window')
 
+
+
 const ChatRoomScreen = ({route}) => {
     const userId = route.params.id
 

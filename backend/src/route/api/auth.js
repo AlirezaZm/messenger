@@ -101,7 +101,6 @@ router.post('/login'
             if (!user){
                 return res.status(400).json({errors: [{msg : 'There is no user with this email'}]})
             }
-            console.log(password , user)
             const isMatch = await bcrypt.compare(password , user.password)
             if (!isMatch){
                 return res.status(400).json({ errors : [ { msg : 'Email and password does not match' } ]})

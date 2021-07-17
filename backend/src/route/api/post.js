@@ -17,7 +17,6 @@ const router = express.Router()
 
 router.get('/', auth, async (req, res) => {
     const posts = await Post.find().populate('postOwnerInfo')
-    console.log(posts)
     if (!posts){
         return res.status(400).json({'errors' : {'msg' : 'There is no post to show'}})
     }
